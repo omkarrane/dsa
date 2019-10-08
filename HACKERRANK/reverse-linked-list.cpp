@@ -69,15 +69,21 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
  *
  */
 SinglyLinkedListNode* reverse(SinglyLinkedListNode* head) {
-    SinglyLinkedList* rev_list = new SinglyLinkedList();
-    while(head != nullptr)
-    {
-        SinglyLinkedListNode* curr_node = new SinglyLinkedListNode(head->data);
-        curr_node->next = rev_list->head;
-        rev_list->head = curr_node;
-        head = head->next;
-    }
-    return rev_list->head;
+  SinglyLinkedListNode* curr = head;
+  SinglyLinkedListNode* prev = nullptr;
+  SinglyLinkedListNode* next = nullptr;
+
+  while(curr != nullptr)
+  {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+
+  head = prev;
+
+  return head;
 }
 
 int main()
