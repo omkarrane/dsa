@@ -6,20 +6,24 @@ vector<string> split_string(string);
 
 // Complete the arrayManipulation function below.
 long arrayManipulation(int n, vector<vector<int>> queries) {
-  long arr[n] = {};
+  long arr[n+1] = {0};
   long max = 0;
 
-  for(int i = 0; i < queries.size(); i++)
+  for(auto query : queries)
   {
-    for(int j = queries[i][0] - 1; j < queries[i][1]; j++)
-    {
-      arr[j] += queries[i][2];
-      if(max < arr[j])
-        max = arr[j];
-    }
+    arr[query[0]] += query[2];
+    arr[query[1]] -= query[2];
   }
 
-  cout << max << endl;
+  int temp = 0;
+  for(int i = 1; i <= n; i++)
+  {
+    temp += arr[i];
+    if(temp > max)
+      max = temp;
+  }
+
+  cout << max;
 
   return max;
 }
