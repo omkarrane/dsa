@@ -12,18 +12,17 @@ long arrayManipulation(int n, vector<vector<int>> queries) {
   for(auto query : queries)
   {
     arr[query[0]] += query[2];
-    arr[query[1]] -= query[2];
+    if((query[1] + 1) <= n)
+      arr[query[1] + 1] -= query[2];
   }
 
-  int temp = 0;
+  long temp = 0;
   for(int i = 1; i <= n; i++)
   {
     temp += arr[i];
     if(temp > max)
       max = temp;
   }
-
-  cout << max;
 
   return max;
 }
