@@ -12,6 +12,8 @@ int main() {
   int n, temp, num, max = 0;
   cin >> n;
 
+  // Refer to SPOJ/HISTOGRA.cpp
+
   stack<pair<int, int>> s;
   for (int i = 0; i < n; i++)
   {
