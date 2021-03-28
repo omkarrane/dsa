@@ -1,37 +1,68 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-        int t;
-        cin >> t;
-        while(t--) {
-                string s;
-                stack<string> var, op;
-                cin >> s; 
-                for(int i = 0; i < s.size(); i++) {
-                        if(s[i] == '+' || s[i] == '-' || s[i] == '/' || s[i] == '*' || s[i] == '^') {
-                        	string t1(1, s[i]);
-                        	op.push(t1);	
-                        }
-                        else if(s[i] >= 'a' && s[i] <= 'z') {
-                        	string t2(1, s[i]);
-                        	var.push(t2);	
-                        }
-                        else if(s[i] == ')') {
-                                if(!var.empty() && !op.empty()) {
-                                        string temp;
-                                        temp = var.top();
-                                        var.pop();
-                                        temp += op.top();
-                                        op.pop();
-                                        temp = var.top() + temp;
-                                        var.pop();
-                                        var.push(temp);
-                                }
-                        }
-                }
+/**
+ * use a stack for storing the operators and brackets
+ * key point is to store the operators and brackets in an ascending priority fashion 
+ * so that when they are popped the highest priority operator is the first to get popped
+ */
+bool isOp(char a)
+{
+  return a == '+' || a == '-' || a == '/' || a == '*' || a == '^';
+}
 
-                cout << var.top() << endl;
+int priority(char a)
+{
+  if (a == '+' || a == '-')
+    return 1;
+  else if (a == '/' || a == '*')
+    return 2;
+  else if (a == '^')
+    return 3;
+  return -1;
+}
+
+int main()
+{
+  int t;
+  cin >> t;
+  while (t--)
+  {
+    string s;
+    cin >> s;
+    stack<char> op;
+    string var;
+    int n = s.size();
+    for (int i = 0; i < n; i++)
+    {
+      if (s[i] == '(')
+        op.push(s[i]);
+      else if (isOp(s[i]))
+      {
+        while (!op.empty() && priority(op.top()) >= priority(s[i]))
+        {
+          var.push_back(op.top());
+          op.pop();
         }
-        return 0;
+
+        op.push(s[i]);
+      }
+      else if (s[i] == ')')
+      {
+        while (!op.empty() && op.top() != '(')
+        {
+          var.push_back(op.top());
+          op.pop();
+        }
+        op.pop();
+      }
+      else
+      {
+        var.push_back(s[i]);
+      }
+    }
+
+    cout << var << "\n";
+  }
+  return 0;
 }
