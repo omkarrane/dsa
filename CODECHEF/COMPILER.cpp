@@ -1,29 +1,33 @@
 #include <iostream>
-#include<stack>
-#include<algorithm> 
+#include <stack>
+#include <algorithm>
 using namespace std;
 
-int main() {
-    int t;
-    cin >> t;
-    for(int w = 0; w < t; w++) {
-        string s;
-        cin >> s;
-        stack<int> st;
-        long res = 0;
-        for(long i = 0; i < s.size(); i++) {
-            if(s[i] == '<')
-                st.push(1);
-            else {
-                if(!st.empty())
-                    st.pop();
-                else
-                    break;
-                if(st.empty())
-                    res = std::max((long)st.size(), i+1);
-            }
-        }
-        cout << res << endl;
+int main()
+{
+  int t;
+  cin >> t;
+  while (t--)
+  {
+    string s;
+    cin >> s;
+    int open = 0;
+    int ans = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+      if (s[i] == '<')
+        open++;
+      else
+        open--;
+
+      if (open == 0)
+        ans = i + 1;
+      else if (open < 0)
+        break;
     }
-	return 0;
+
+    cout << ans << "\n";
+  }
+
+  return 0;
 }
