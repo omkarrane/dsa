@@ -3,6 +3,11 @@
 #include <algorithm>
 using namespace std;
 
+/**
+ * can use a simple variale to increment when a opening bracket arrives and decrement when a closing one arrives
+ * when the variables value is below 0 means the substring is not a valid string
+ * when the variables value is 0, it means the substring is a valid string, hence store the index in result
+ */
 int main()
 {
   int t;
