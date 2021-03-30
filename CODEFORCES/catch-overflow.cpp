@@ -13,7 +13,7 @@ int main()
   cin >> t;
   unsigned long long num = 0;
   stack<pair<unsigned long long, unsigned long long>> st;
-  bool flag = false, flag2 = false;;
+  bool flag = false, flag2 = false;
   unsigned long long overflow = pow(2ll, 32ll) - 1ll;
   while (t--)
   {
