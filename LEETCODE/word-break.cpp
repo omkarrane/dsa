@@ -43,3 +43,53 @@ public:
         return combineSolver(s, wordDict);
     }
 };
+
+class Solution {
+public:
+    vector<int> dp;
+    set<string> dict;
+    
+    bool combineSolver(string &s, int index) {
+        if (index == s.size())
+            return 1;
+        
+        if (dp[index] != -1)
+            return dp[index];
+        
+        for (int i = index + 1; i <= s.size(); i++) {
+            string a = s.substr(index, i - index);
+            if (dict.find(a) != dict.end() && combineSolver(s, i))
+                return dp[index] = 1;
+        }
+        
+        return dp[index] = 0;
+    } 
+    
+    bool wordBreak(string s, vector<string>& wordDict) {
+        dp = vector<int>(s.size(), -1);
+        dict = set<string>();
+        
+        for (int i = 0; i < wordDict.size(); i++)
+            dict.insert(wordDict[i]);
+        
+        return combineSolver(s, 0);
+    }
+};
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string> wordSet(wordDict.begin(), wordDict.end());
+        vector<bool> dp(s.size() + 1);
+        dp[0] = true;
+        
+        for (int i = 1; i <= s.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.find(s.substr(j, i - j)) != wordSet.end())
+                    dp[i] = true;
+            }
+        }
+        
+        return dp[s.size()];
+    }
+};
