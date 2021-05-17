@@ -10,8 +10,14 @@ using namespace std;
     * 1 is for un-visited node.
     * 2 is for currently in-process node.
     * 3 is for visited node
-  * At any point if we find a node that is in-process, it means that there is a cycle.
-  * Else the order received is the answer.
+    * At any point if we find a node that is in-process, it means that there is a cycle.
+    * Else the order received is the answer.
+  * Another approach is to use indegrees to traverse the graph.
+    * We first find the node with indegree as 0 as this node doesn't depend on anyone.
+    * Once we find the indegree, we mark it as visited first.
+    * Then we attempt to remove this node from the graph. For this we decrement the indegree of all its neighbours. After decrementing we also check if their value becomes 0. If yes, we push it to the queue.
+    * We continue this process until the ans.size() != n.
+    * If not, it means there was some cycle available in between where we couldn't find any node with indegree as 0.
  */
 class Solution {
 public:
@@ -59,5 +65,56 @@ public:
         if (isPossible)
             return ans;
         return vector<int>();
+    }
+};
+
+
+class Solution {
+public:
+    vector<int> findOrder(int n, vector<vector<int>>& p) {
+        vector<bool> visited(n);
+        map<int, vector<int>> graph;
+        vector<int> indegrees(n);
+        
+        for (int i = 0; i < n; i++) {
+            visited[i] = false;
+            graph[i] = vector<int>();
+            indegrees[i] = 0;
+        }
+        
+        for (int i = 0; i < p.size(); i++) {
+            graph[p[i][0]].push_back(p[i][1]);
+            indegrees[p[i][1]]++;
+        }
+        
+        queue<int> q;
+        for (int i = 0; i < n; i++)
+            if (indegrees[i] == 0)
+                q.push(i);
+        
+        vector<int> ans;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            
+            if (visited[node])
+                continue;
+            
+            ans.push_back(node);
+            visited[node] = true;
+            vector<int> adj = graph[node];
+            for (int i = 0; i < adj.size(); i++) {
+                indegrees[adj[i]]--;
+                if (indegrees[adj[i]] == 0)
+                    q.push(adj[i]);
+            }
+        }
+        
+        if (ans.size() != n)
+            return vector<int>();
+        
+        reverse(ans.begin(), ans.end());
+        
+        return ans;
     }
 };
